@@ -1,24 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
-	<title>画板</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<link rel="stylesheet" href="painter.css">
+
+  <title>SVG图片生成器</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f7f7f7;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    input[type="file"] {
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    label {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .avatar {
+      margin-top: 10px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .download-button {
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-	<div class="painter">
-		<h1>奇偶猫画板</h1>
-	<canvas id="canvas" width="400" height="500"></canvas>
-		<div class="controls">
-			<label for="brush-size">笔画大小：</label>
-			<input id="brush-size" type="range" min="1" max="50" value="5">
-			<label for="color-picker">笔画颜色：</label>
-			<input id="color-picker" type="color" value="#000000">
-			<button id="save-btn">保存为 PNG 图片</button>
-		</div>
-	</div>
+  <div class="container">
+    <h1>SVG图片生成器</h1>
+            <p class="c_lsxg c_lysxg"><a href="https://xzwzl6.github.io/erweimazanshang" target="_blank">👉赞赏轩哥哥</a></p>
 
-	<script src="painter.js"></script>
+    <label for="upload">选择图片</label>
+    <input id="upload" type="file" required accept="image/gif, image/jpeg, image/png">
+    <img class="avatar"  src="http://bbs.xydai.cn/content/templates/htzyw/lib/img/logo.png" height="100px" alt="等待上传">
+    <a class="download-button" href="#" download="noavatar.svg">下载 SVG</a>
+  </div>
+
+<script>
+document.getElementById('upload').addEventListener('change', function() {
+  var file = this.files[0];
+  if (file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener('load', function() {
+      var dataURL = this.result;
+      var svgCode = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="120"><image xlink:href="'+dataURL+'" height="120" width="120"/></svg>';
+      var blob = new Blob([svgCode], {type: 'image/svg+xml'});
+      var url = URL.createObjectURL(blob);
+      document.querySelector('.avatar').src = url;
+      document.querySelector('.download-button').style.display = 'inline-block';
+      document.querySelector('.download-button').href = url;
+    });
+  }
+});
+</script>
 </body>
 </html>
